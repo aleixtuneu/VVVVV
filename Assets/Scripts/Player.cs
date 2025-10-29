@@ -1,14 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerActions
+public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions _inputActions;
-    [SerializeField] private Rigidbody2D _rb;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
         _inputActions = new InputSystem_Actions();
         _inputActions.Player.SetCallbacks(this);
     }
@@ -25,21 +23,13 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        _rb.linearVelocity = context.ReadValue<Vector2>();
+        Vector2 direction = context.ReadValue<Vector2>();
+        direction.y = 0;
+        _mb.Move(direction);
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump");
-    }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
+        _jb.Jump();
     }
 }
