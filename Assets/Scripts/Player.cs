@@ -23,13 +23,17 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        // Guardar la direcció quan es presiona o es deixa la tecla
         Vector2 direction = context.ReadValue<Vector2>();
         direction.y = 0;
-        _mb.Move(direction);
+        _mb.SetDirection(direction);
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        _jb.Jump();
+        if (context.performed)
+        {
+            _jb.Jump();
+        }
     }
 }
