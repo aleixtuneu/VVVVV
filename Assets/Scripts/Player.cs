@@ -5,7 +5,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions _inputActions;
 
-    private void Awake()
+    protected override void Awake()
     {
         _inputActions = new InputSystem_Actions();
         _inputActions.Player.SetCallbacks(this);

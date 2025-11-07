@@ -8,6 +8,9 @@ public class MoveBehaviour : MonoBehaviour
     private Vector2 _currentDirection;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    //
+    private bool _isGrounded;
+    //
 
     private void Awake()
     {
@@ -18,6 +21,16 @@ public class MoveBehaviour : MonoBehaviour
     public void SetAnimator(Animator animator)
     {
         _animator = animator;
+    }
+
+    public void SetGroundedState(bool grounded)
+    {
+        _isGrounded = grounded;
+    }
+
+    public bool IsGrounded() 
+    {
+        return _isGrounded;
     }
 
     // Establir direcció del moviment
