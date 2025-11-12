@@ -41,7 +41,7 @@ public class MoveBehaviour : MonoBehaviour
         if (_animator != null)
         {
             // Si la direcció horitzontal no es 0, el personatge es mou
-            bool isRunning = (direction.x != 0);
+            bool isRunning = (direction.x != 0) && _isGrounded;
             _animator.SetBool("IsRunning", isRunning);        
         }
 

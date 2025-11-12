@@ -14,10 +14,12 @@ public class Character : MonoBehaviour
     //
     [SerializeField] private LayerMask groundLayer; // Capa de terra
     [SerializeField] private Transform groundCheckPoint; // Punt d'origen del raycast
-    [SerializeField] private Transform groundCheckPointInverted;
     [SerializeField] protected float raycastLength = 0.3f;
 
     private bool _isGravityInverted = false;
+
+    private SpriteRenderer _charSpriteRenderer;
+    private float _groundCheckPointOriginalLocalY;
     //
 
     protected virtual void Awake()
@@ -25,7 +27,12 @@ public class Character : MonoBehaviour
         _mb = GetComponent<MoveBehaviour>();
         _jb = GetComponent<JumpBehaviour>();
         //
+        _charSpriteRenderer = GetComponent<SpriteRenderer>();
 
+        if (groundCheckPoint != null)
+        {
+            _groundCheckPointOriginalLocalY = groundCheckPoint.localPosition.y;
+        }
         //
     }
 
@@ -49,12 +56,42 @@ public class Character : MonoBehaviour
         _animator.SetBool("IsJumping", !currentlyGrounded);
     }
 
+    public void SetGravityInvertedState(bool inverted)
+    {
+        _isGravityInverted = inverted;
+
+        if (groundCheckPoint != null)
+        {
+            Vector3 localPos = groundCheckPoint.localPosition;
+
+            if (_isGravityInverted)
+            {
+                // Posició superior
+                localPos.y = -_groundCheckPointOriginalLocalY;
+                Debug.Log($"[Character.SetGravityInvertedState] Gravedad invertida. Nueva posición Y local: {localPos.y}");
+            }
+            else // Gravedad normal
+            {
+                // Posició inferior
+                localPos.y = _groundCheckPointOriginalLocalY;
+                Debug.Log($"[Character.SetGravityInvertedState] Gravedad normal. Nueva posición Y local: {localPos.y}");
+            }
+            groundCheckPoint.localPosition = localPos;
+            Debug.Log($"[Character.SetGravityInvertedState] groundCheckPoint.localPosition actualizado a: {groundCheckPoint.localPosition}");
+        }
+        else
+        {
+            Debug.LogError("[Character.SetGravityInvertedState] groundCheckPoint es null al intentar cambiar su posición.", this);
+        }
+    }
+
     public bool IsGrounded()
     {
-        Transform currentCheckPoint = _isGravityInverted ? groundCheckPointInverted : groundCheckPoint; // Seleccionar punt correcte
+        Vector2 raycastDirection = _isGravityInverted ? Vector2.up : Vector2.down; // Seleccionar punt correcte
 
+        Debug.Log($"[Character.IsGrounded] Raycast desde: {groundCheckPoint.position} hacia: {raycastDirection} (Gravedad invertida: {_isGravityInverted})");
         // Raycast cap avall, retorna true si detecta algo
-        RaycastHit2D hit = Physics2D.Raycast(groundCheckPoint.position, Vector2.down, raycastLength, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(groundCheckPoint.position, raycastDirection, raycastLength, groundLayer);
 
         Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
 
@@ -64,24 +101,9 @@ public class Character : MonoBehaviour
     // Visualitzar raycast
     private void OnDrawGizmos()
     {
+        Vector2 gizmoDirection = _isGravityInverted ? Vector2.up : Vector2.down;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(groundCheckPoint.position, (Vector2)groundCheckPoint.position + Vector2.down * raycastLength);
-
-        if (groundCheckPoint != null)
-        {
-            Gizmos.color = _isGravityInverted ? Color.gray : Color.red; // Color diferent si no es l'actiu
-            Gizmos.DrawLine(groundCheckPoint.position, (Vector2)groundCheckPoint.position + Vector2.down * raycastLength);
-        }
-
-        if (groundCheckPointInverted != null)
-        {
-            Gizmos.color = _isGravityInverted ? Color.red : Color.gray;
-            Gizmos.DrawLine(groundCheckPointInverted.position, (Vector2)groundCheckPointInverted.position + Vector2.down * raycastLength);
-        }
-    }
-
-    public void SetGravityInvertedState(bool inverted)
-    {
-        _isGravityInverted = inverted;
+        Gizmos.DrawLine(groundCheckPoint.position, (Vector2)groundCheckPoint.position + gizmoDirection * raycastLength);
     }
 }

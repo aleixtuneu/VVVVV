@@ -7,11 +7,22 @@ public class JumpBehaviour : MonoBehaviour
     private float _originalGravityScale;
     private bool _isGravityInverted = false;
     private SpriteRenderer _spriteRenderer;
+    //
+    private Character _character;
+    //
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        //
+        _character = GetComponent<Character>();
+
+        if (_character == null)
+        {
+            Debug.LogError("[JumpBehaviour.Awake] ¡ERROR! No se pudo encontrar el componente Character en el mismo GameObject.", this);
+        }
+        //
 
         if (_rb != null)
         {
@@ -27,8 +38,11 @@ public class JumpBehaviour : MonoBehaviour
             // Si la gravetat està normal, invertir al saltar. Si està invertida, posar normal.
             if (!_isGravityInverted)
             {
+                Debug.Log("[JumpBehaviour.Jump] Saltando e invirtiendo gravedad.");
+
                 _rb.gravityScale = -_originalGravityScale; // Invertir gravetat
                 _isGravityInverted = true;
+
                 _rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); // Força de salt 
 
                 // Girar sprite
@@ -36,6 +50,14 @@ public class JumpBehaviour : MonoBehaviour
                 {
                     _spriteRenderer.flipY = true;
                 }
+
+                //
+                if (_character != null)
+                {
+                    _character.SetGravityInvertedState(true); // <--- ESTO DEBE SER LLAMADO
+                    Debug.Log("[JumpBehaviour.Jump] Llamando a Character.SetGravityInvertedState(true)");
+                }
+                //
             }
             else
             {
@@ -47,9 +69,18 @@ public class JumpBehaviour : MonoBehaviour
                 {
                     _spriteRenderer.flipY = false;
                 }
+
+                // gravetat normal
+                if (_character != null)
+                {
+                    _character.SetGravityInvertedState(false);
+                    //
+                    Debug.Log("[JumpBehaviour.Jump] Llamando a Character.SetGravityInvertedState(false)");
+                    //
+                }
             }
 
-            // Opcional: limpiar la velocidad vertical para un cambio más "limpio"
+            // Netejar velocitat vertical
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, 0);
         }
 
@@ -66,6 +97,15 @@ public class JumpBehaviour : MonoBehaviour
             if (_spriteRenderer != null)
             {
                 _spriteRenderer.flipY = false;
+            }
+
+            // Gravetat normal
+            if (_character != null)
+            {
+                _character.SetGravityInvertedState(false);
+                //
+                Debug.Log("[JumpBehaviour.ResetGravityToNormal] Llamando a Character.SetGravityInvertedState(false)");
+                //
             }
         }
     }
