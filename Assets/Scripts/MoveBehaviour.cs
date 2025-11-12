@@ -8,6 +8,9 @@ public class MoveBehaviour : MonoBehaviour
     private Vector2 _currentDirection;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    //
+    private bool _isGrounded;
+    //
 
     private void Awake()
     {
@@ -20,6 +23,16 @@ public class MoveBehaviour : MonoBehaviour
         _animator = animator;
     }
 
+    public void SetGroundedState(bool grounded)
+    {
+        _isGrounded = grounded;
+    }
+
+    public bool IsGrounded() 
+    {
+        return _isGrounded;
+    }
+
     // Establir direcció del moviment
     public void SetDirection(Vector2 direction)
     {
@@ -28,7 +41,7 @@ public class MoveBehaviour : MonoBehaviour
         if (_animator != null)
         {
             // Si la direcció horitzontal no es 0, el personatge es mou
-            bool isRunning = (direction.x != 0);
+            bool isRunning = (direction.x != 0) && _isGrounded;
             _animator.SetBool("IsRunning", isRunning);        
         }
 
