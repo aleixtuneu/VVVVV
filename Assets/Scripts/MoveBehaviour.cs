@@ -63,11 +63,4 @@ public class MoveBehaviour : MonoBehaviour
     {
         _rb.linearVelocity = new Vector2(_currentDirection.x * speed, _rb.linearVelocity.y);
     }
-
-    /*
-    public void Move(Vector2 direction)
-    {
-       _rb.linearVelocity = new Vector2(direction.x * speed, _rb.linearVelocityY);
-    }
-    */
 }
