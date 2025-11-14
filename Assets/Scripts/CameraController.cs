@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
 
         // Suavitzar el moviment de la càmera
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-
+        /*
         // Límits
         if (useBounds)
         {
@@ -29,7 +29,8 @@ public class CameraController : MonoBehaviour
             float clampedY = Mathf.Clamp(smoothedPosition.y, minCameraBounds.y + camHalfHeight, maxCameraBounds.y - camHalfHeight);
 
             smoothedPosition = new Vector3(clampedX, clampedY, smoothedPosition.z);
-        }
+        } 
+        */
 
         // Posició de la càmera mantenint Z
         transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, transform.position.z);
