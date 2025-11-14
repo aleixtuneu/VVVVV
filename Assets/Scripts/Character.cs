@@ -11,7 +11,6 @@ public class Character : MonoBehaviour
     [SerializeField] protected MoveBehaviour _mb;
     [SerializeField] protected JumpBehaviour _jb;
     [SerializeField] protected Animator _animator;
-    //
     [SerializeField] private LayerMask groundLayer; // Capa de terra
     [SerializeField] private Transform groundCheckPoint; // Punt d'origen del raycast
     [SerializeField] protected float raycastLength = 0.3f;
@@ -20,6 +19,8 @@ public class Character : MonoBehaviour
 
     private SpriteRenderer _charSpriteRenderer;
     private float _groundCheckPointOriginalLocalY;
+    //
+    private bool _canInvertGravity = true;
     //
 
     protected virtual void Awake()
@@ -68,20 +69,13 @@ public class Character : MonoBehaviour
             {
                 // Posició superior
                 localPos.y = -_groundCheckPointOriginalLocalY;
-                Debug.Log($"[Character.SetGravityInvertedState] Gravedad invertida. Nueva posición Y local: {localPos.y}");
             }
             else // Gravedad normal
             {
                 // Posició inferior
                 localPos.y = _groundCheckPointOriginalLocalY;
-                Debug.Log($"[Character.SetGravityInvertedState] Gravedad normal. Nueva posición Y local: {localPos.y}");
             }
             groundCheckPoint.localPosition = localPos;
-            Debug.Log($"[Character.SetGravityInvertedState] groundCheckPoint.localPosition actualizado a: {groundCheckPoint.localPosition}");
-        }
-        else
-        {
-            Debug.LogError("[Character.SetGravityInvertedState] groundCheckPoint es null al intentar cambiar su posición.", this);
         }
     }
 
@@ -89,13 +83,28 @@ public class Character : MonoBehaviour
     {
         Vector2 raycastDirection = _isGravityInverted ? Vector2.up : Vector2.down; // Seleccionar punt correcte
 
-        Debug.Log($"[Character.IsGrounded] Raycast desde: {groundCheckPoint.position} hacia: {raycastDirection} (Gravedad invertida: {_isGravityInverted})");
         // Raycast cap avall, retorna true si detecta algo
         RaycastHit2D hit = Physics2D.Raycast(groundCheckPoint.position, raycastDirection, raycastLength, groundLayer);
 
         Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
 
+        // Si detecta terra, resetejar salt
+        if (hit.collider != null)
+        {
+            _canInvertGravity = true;
+        }
+
         return hit.collider != null;
+    }
+
+    public bool CanInvertGravity()
+    {
+        return _canInvertGravity;
+    }
+
+    public void SetCanInvertGravity(bool canInvert)
+    {
+        _canInvertGravity = canInvert;
     }
 
     // Visualitzar raycast
@@ -105,5 +114,5 @@ public class Character : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawLine(groundCheckPoint.position, (Vector2)groundCheckPoint.position + gizmoDirection * raycastLength);
-    }
+    }  
 }

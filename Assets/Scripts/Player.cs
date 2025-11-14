@@ -7,9 +7,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     protected override void Awake()
     {
-        //
         base.Awake(); // Inicialitzar _mb i _jb
-        //
         _inputActions = new InputSystem_Actions();
         _inputActions.Player.SetCallbacks(this);
     }
