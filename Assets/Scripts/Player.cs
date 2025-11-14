@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions _inputActions;
+    //
+    public int _bananaCount = 0;
+    //
 
     protected override void Awake()
     {
@@ -36,5 +39,22 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         {
             _jb.Jump();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Comprovar si l'objecte de colisio es una banana
+        if (collision.CompareTag("Banana"))
+        {
+            _bananaCount++;
+            // Destruir el GameObject de la banana
+            Destroy(collision.gameObject);
+        }
+    }
+
+    // Contador de bananes
+    public void DisplayBananaCount()
+    {
+
     }
 }
