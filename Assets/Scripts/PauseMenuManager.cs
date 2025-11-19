@@ -39,27 +39,18 @@ public class PauseMenuManager : MonoBehaviour
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(true); // Mostrar menu de pausa
+            Debug.Log("PauseMenuManager: Panel de pausa activado.");
         }
+        else
+        {
+            Debug.LogError("PauseMenuManager: ¡El 'Pause Menu Panel' no está asignado en el Inspector!");
+        }
+
         Time.timeScale = 0f; // Aturar temps del joc
         _isGamePaused = true;
+        Debug.Log("Juego Pausado.");
     }
-    /*
-    public void Update()
-    {
-        // Detectar tecla per pausar/reanudar
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (_isGamePaused)
-            {
-                ResumeGame(); // Si està pausat, reanudar
-            }
-            else
-            {
-                PauseGame(); // Si no està pausat, pausar
-            }
-        }
-    }
-    */
+
     // Reanudar joc
     public void ResumeGame()
     {
