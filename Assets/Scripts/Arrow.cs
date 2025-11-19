@@ -33,12 +33,11 @@ public class Arrow : MonoBehaviour
     }
 
     // Colisions
-    public void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        // Si colisiona con el jugador
-        if (other.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
+            Player player = collision.GetComponent<Player>();
             if (player != null)
             {
                 player.Die(); // Eliminar jugador
@@ -46,7 +45,7 @@ public class Arrow : MonoBehaviour
             ReturnToPool(); // Retorna al pool
         }
         // Si colisiona amb l'entorn
-        else if (!other.CompareTag("Banana") && !other.CompareTag("Spikes")) // Ignorar bananas i punxes
+        else if (!collision.CompareTag("Banana") && !collision.CompareTag("Spikes")) // Ignorar bananas i punxes
         {
             ReturnToPool(); // Retorna al pool
         }
