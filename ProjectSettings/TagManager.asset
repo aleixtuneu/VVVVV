@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Banana
   - Spikes
+  - Arrow
   layers:
   - Default
   - TransparentFX
