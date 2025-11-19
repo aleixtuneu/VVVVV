@@ -3,64 +3,74 @@ using UnityEngine;
 public class PatrolEnemy : MonoBehaviour
 {
     [SerializeField] private float speed = 2f; // Velocitat de moviment de l'enemic
-    [SerializeField] private Transform patrolPointA; // Primer punt de patrulla
-    [SerializeField] private Transform patrolPointB; // Segon punt de patrulla
+    [SerializeField] private Transform patrolPointA; // Punt A
+    [SerializeField] private Transform patrolPointB; // Punt B
     [SerializeField] private float arrivalThreshold = 0.1f; // Distancia per considerar que ha arribat al punt
 
     private Rigidbody2D _rb;
     private SpriteRenderer _spriteRenderer;
 
-    private Vector2 _targetPoint; // punt al que es dirigeix l'enemic
-    private bool _movingRight = true; // direcci� de moviment
+    private Vector2 _worldPatrolPointA; // Posició global punt A
+    private Vector2 _worldPatrolPointB; // Posició global punt B
+    private Vector2 _targetPoint; // Punt on es dirigeix
+    private bool _movingRight; // Direcció de moviment
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Inicialitzar al punt A
-        _targetPoint = patrolPointA.position;
-        transform.position = patrolPointA.position;
-        UpdateDirection(); // Establir direcci�n inicial de l'sprite
+        // Obtenir posicions
+        _worldPatrolPointA = patrolPointA.position;
+        _worldPatrolPointB = patrolPointB.position;
+
+        // Comprovar que el punt A està a l'esquerra del punt B
+        if (_worldPatrolPointA.x > _worldPatrolPointB.x)
+        {
+            // Intercanviar
+            Vector2 temp = _worldPatrolPointA;
+            _worldPatrolPointA = _worldPatrolPointB;
+            _worldPatrolPointB = temp;
+        }
+
+        _targetPoint = _worldPatrolPointA;
+        // Colocar enemic en la posició inicial
+        transform.position = _worldPatrolPointA;
+        UpdateDirection(); // Direcció inicial de l'sprite
     }
 
     void FixedUpdate()
     {
-        // Moure l'enemic fins el punt objectiu
+        // Moure cap al punt objectiu
         Vector2 direction = (_targetPoint - (Vector2)transform.position).normalized;
         _rb.linearVelocity = new Vector2(direction.x * speed, _rb.linearVelocity.y);
 
-        // Comprovar si ha arribat al punt
+        // Comprobar si ha arribat al punt
         if (Vector2.Distance(transform.position, _targetPoint) < arrivalThreshold)
         {
-            // Canviar punt
-            if (_targetPoint == (Vector2)patrolPointA.position)
+            // Canviar a l'altre punt
+            if (_targetPoint == _worldPatrolPointA)
             {
-                _targetPoint = patrolPointB.position;
-                _movingRight = true;
+                _targetPoint = _worldPatrolPointB;
             }
             else
             {
-                _targetPoint = patrolPointA.position;
-                _movingRight = false;
+                _targetPoint = _worldPatrolPointA;
             }
-            UpdateDirection(); // Actualizar sprite perqu� miri a la nova direcci�
+
+            // Si està a la dreta de la posició actual, _movingRight = true
+            _movingRight = (_targetPoint.x > transform.position.x);
+
+            UpdateDirection(); // Actualizar direcció de l'sprite
         }
     }
 
-    // Actualitza la direcci� de l'sprite segons _movingRight
+    // Actualizar direcció de l'sprite
     void UpdateDirection()
     {
         if (_spriteRenderer != null)
         {
-            if (_movingRight)
-            {
-                _spriteRenderer.flipX = false; // Dreta
-            }
-            else
-            {
-                _spriteRenderer.flipX = true; // Esquerra
-            }
+            _spriteRenderer.flipX = _movingRight;
         }
     }
 
@@ -77,21 +87,26 @@ public class PatrolEnemy : MonoBehaviour
         }
     }
 
-    // Visualitzar punts de patrulla i direcci� a l'editor
+    // Visualizar punts i direcció
     void OnDrawGizmos()
     {
+        Vector2 gizmoPointA = (Application.isPlaying && patrolPointA != null) ? _worldPatrolPointA : (patrolPointA != null ? (Vector2)patrolPointA.position : (Vector2)transform.position - Vector2.right);
+        Vector2 gizmoPointB = (Application.isPlaying && patrolPointB != null) ? _worldPatrolPointB : (patrolPointB != null ? (Vector2)patrolPointB.position : (Vector2)transform.position + Vector2.right);
+
         if (patrolPointA != null && patrolPointB != null)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(patrolPointA.position, patrolPointB.position);
-            Gizmos.DrawWireSphere(patrolPointA.position, 0.2f);
-            Gizmos.DrawWireSphere(patrolPointB.position, 0.2f);
+            Gizmos.DrawLine(gizmoPointA, gizmoPointB);
+            Gizmos.DrawWireSphere(gizmoPointA, 0.2f);
+            Gizmos.DrawWireSphere(gizmoPointB, 0.2f);
         }
 
-        if (_rb != null)
+        if (_rb != null && _spriteRenderer != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * (_spriteRenderer.flipX ? -1 : 1) * 0.5f);
+
+            Vector2 forwardDir = _spriteRenderer.flipX ? Vector2.left : Vector2.right;
+            Gizmos.DrawLine(transform.position, (Vector2)transform.position + forwardDir * 0.5f);
         }
     }
 }

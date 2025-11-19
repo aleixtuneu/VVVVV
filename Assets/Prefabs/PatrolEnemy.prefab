@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 2473447946632953900}
   - component: {fileID: 5881094202423607258}
   - component: {fileID: 3739597711121036670}
+  - component: {fileID: -9048463669362954165}
   m_Layer: 0
   m_Name: PatrolEnemy
   m_TagString: Enemy
@@ -229,3 +230,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-9048463669362954165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6522121043026839858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8732a094fb15f9e4c88961b4ee0bf0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PatrolEnemy
+  speed: 2
+  patrolPointA: {fileID: 0}
+  patrolPointB: {fileID: 0}
+  arrivalThreshold: 0.1
