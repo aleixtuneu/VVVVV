@@ -8,8 +8,9 @@ public class MoveBehaviour : MonoBehaviour
     private Vector2 _currentDirection;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
-    //
     private bool _isGrounded;
+    //
+    private float _lastInputX = 0f; // Última direcció horitzontal
     //
 
     private void Awake()
@@ -25,7 +26,15 @@ public class MoveBehaviour : MonoBehaviour
 
     public void SetGroundedState(bool grounded)
     {
+        //
+        bool wasGrounded = _isGrounded;
+        //
         _isGrounded = grounded;
+
+        if (!wasGrounded && _isGrounded)
+        {
+            UpdateRunningAnimation();
+        }
     }
 
     public bool IsGrounded() 
@@ -37,7 +46,25 @@ public class MoveBehaviour : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         _currentDirection = direction;
+        //
+        _lastInputX = direction.x; // Últim input horitzontal
 
+        if (_lastInputX != 0 && _spriteRenderer != null)
+        {
+            if (_lastInputX > 0) // Dreta
+            {
+                _spriteRenderer.flipX = false;
+            }
+            else if (_lastInputX < 0) // Esquerra
+            {
+                _spriteRenderer.flipX = true;
+            }
+        }
+
+        UpdateRunningAnimation();
+        //
+
+        /*
         if (_animator != null)
         {
             // Si la direcció horitzontal no es 0, el personatge es mou
@@ -57,8 +84,18 @@ public class MoveBehaviour : MonoBehaviour
                 _spriteRenderer.flipX = true;
             }
         }
+        */
     }
-
+    //
+    private void UpdateRunningAnimation()
+    {
+        if (_animator != null)
+        {
+            bool isRunning = (Mathf.Abs(_lastInputX) > 0.01f) && _isGrounded;
+            _animator.SetBool("IsRunning", isRunning);
+        }
+    }
+    //
     private void FixedUpdate()
     {
         _rb.linearVelocity = new Vector2(_currentDirection.x * speed, _rb.linearVelocity.y);
