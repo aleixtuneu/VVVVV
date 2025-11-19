@@ -59,7 +59,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
 
     // Morirse
-    private void Die()
+    public void Die()
     {
         // Desactivar controls
         if (_inputActions != null)
