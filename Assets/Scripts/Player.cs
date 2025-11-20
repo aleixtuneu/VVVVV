@@ -10,6 +10,8 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     [SerializeField] private int totalBananasInLevel = 1;
     [SerializeField] private TextMeshProUGUI bananaCountText;
 
+    private bool _interactButtonPressed = false;
+
     protected override void Awake()
     {
         base.Awake(); // Inicialitzar _mb i _jb
@@ -77,6 +79,12 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             }
         }
 
+        // Interacció (diàleg)
+        if (collision.CompareTag("DialogueTrigger"))
+        {
+
+        }
+
         // Si l'objecte de colisio son punxes
         if (collision.CompareTag("Spikes"))
         {
@@ -119,6 +127,27 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         else
         {
             Debug.LogWarning("BananaCountText no está asignado en el Inspector de Player.cs.");
+        }
+    }
+
+    //
+
+    void Update()
+    {
+        base.Update();
+
+        if (_interactButtonPressed)
+        {
+            // reiniciar
+            _interactButtonPressed = false;
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _interactButtonPressed = true;
         }
     }
 }
