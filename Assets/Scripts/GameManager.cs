@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameObject winMenuPanel;
+    [SerializeField] private GameObject gameOverMenuPanel;
 
     void Awake()
     {
@@ -43,9 +44,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("¡Juego Perdido!");
         {
-            if (winMenuPanel != null)
+            if (gameOverMenuPanel != null)
             {
-                winMenuPanel.SetActive(true);
+                gameOverMenuPanel.SetActive(true);
             }
         }
         Time.timeScale = 0f; // Pausar

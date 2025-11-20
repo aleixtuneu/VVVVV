@@ -110,7 +110,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.GameOver(); // Esto pausará el juego y mostrará el menú de Game Over
+            GameManager.Instance.GameOver();
         }
 
         // Destruir el GameObject del jugador després d'un temps
