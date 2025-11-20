@@ -19,31 +19,23 @@ public class Character : MonoBehaviour
 
     private SpriteRenderer _charSpriteRenderer;
     private float _groundCheckPointOriginalLocalY;
-    //
     private bool _canInvertGravity = true;
-    //
 
     protected virtual void Awake()
     {
         _mb = GetComponent<MoveBehaviour>();
         _jb = GetComponent<JumpBehaviour>();
-        //
-        _charSpriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (groundCheckPoint != null)
-        {
-            _groundCheckPointOriginalLocalY = groundCheckPoint.localPosition.y;
-        }
-        //
-    }
-
-    public void Start()
-    {
         _animator = GetComponent<Animator>();
+        _charSpriteRenderer = GetComponent<SpriteRenderer>();
 
         if (_animator != null)
         {
             _mb.SetAnimator(_animator);
+        }
+
+        if (groundCheckPoint != null)
+        {
+            _groundCheckPointOriginalLocalY = groundCheckPoint.localPosition.y;
         }
     }
 

@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions _inputActions;
     public int _bananaCount = 0;
+
+    [SerializeField] private int totalBananasInLevel = 1;
+    [SerializeField] private TextMeshProUGUI bananaCountText;
 
     protected override void Awake()
     {
@@ -23,17 +27,29 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         _inputActions.Player.Disable();
     }
 
+    public void Start()
+    {
+        DisplayBananaCount();
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Guardar la direcció quan es presiona o es deixa la tecla
-        Vector2 direction = context.ReadValue<Vector2>();
-        direction.y = 0;
-        _mb.SetDirection(direction);
+        if (Time.timeScale > 0)
+        {
+            // Guardar la direcció quan es presiona o es deixa la tecla
+            Vector2 direction = context.ReadValue<Vector2>();
+            direction.y = 0;
+            _mb.SetDirection(direction);
+        }
+        else
+        {
+            _mb.SetDirection(Vector2.zero);
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (Time.timeScale > 0 && context.performed)
         {
             _jb.Jump();
         }
@@ -48,6 +64,17 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _bananaCount++;
             // Destruir el GameObject de la banana
             Destroy(collision.gameObject);
+
+            DisplayBananaCount();
+
+            if (_bananaCount >= totalBananasInLevel)
+            {
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.WinGame();
+                    _inputActions.Player.Disable();
+                }
+            }
         }
 
         // Si l'objecte de colisio son punxes
@@ -73,6 +100,11 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _animator.SetTrigger("TakeDamage");
         }
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver(); // Esto pausará el juego y mostrará el menú de Game Over
+        }
+
         // Destruir el GameObject del jugador després d'un temps
         Destroy(gameObject, 0.9f);
     }
@@ -80,6 +112,13 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     // Contador de bananes
     public void DisplayBananaCount()
     {
-
+        if (bananaCountText != null)
+        {
+            bananaCountText.text = "Bananas: " + _bananaCount + "/" + totalBananasInLevel;
+        }
+        else
+        {
+            Debug.LogWarning("BananaCountText no está asignado en el Inspector de Player.cs.");
+        }
     }
 }
