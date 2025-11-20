@@ -86,7 +86,7 @@ public class Character : MonoBehaviour
         // Raycast cap avall, retorna true si detecta algo
         RaycastHit2D hit = Physics2D.Raycast(groundCheckPoint.position, raycastDirection, raycastLength, groundLayer);
 
-        Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
+        //Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
 
         // Si detecta terra, resetejar salt
         if (hit.collider != null)
