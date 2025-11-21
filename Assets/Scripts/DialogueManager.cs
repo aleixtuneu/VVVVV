@@ -162,6 +162,6 @@ public class DialogueManager : MonoBehaviour, InputSystem_Actions.IUIActions
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

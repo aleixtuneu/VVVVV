@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
@@ -102,19 +103,32 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _inputActions.Player.Disable();
         }
 
-        // Animación de mort
+        StartCoroutine(DieSequence());
+    }
+
+    // Corrutina per l'animació de die
+    private IEnumerator DieSequence()
+    {
+        // Reproduir animació
         if (_animator != null)
         {
             _animator.SetTrigger("TakeDamage");
+            yield return null; // Espera un frame
         }
 
+        float animationDuration = 0.9f;
+
+        // Esperar temps d'animació
+        yield return new WaitForSeconds(animationDuration);
+
+        // Pausar joc i mostrar menú gameOver
         if (GameManager.Instance != null)
         {
             GameManager.Instance.GameOver();
         }
 
-        // Destruir el GameObject del jugador després d'un temps
-        Destroy(gameObject, 0.9f);
+        // Destruir jugador
+        //Destroy(gameObject);
     }
 
     // Contador de bananes
@@ -124,13 +138,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         {
             bananaCountText.text = "Bananas: " + _bananaCount + "/" + totalBananasInLevel;
         }
-        else
-        {
-            Debug.LogWarning("BananaCountText no está asignado en el Inspector de Player.cs.");
-        }
     }
-
-    //
 
     void Update()
     {

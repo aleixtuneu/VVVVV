@@ -8,6 +8,8 @@ TagManager:
   - Spikes
   - Arrow
   - Enemy
+  - DialogTrigger
+  - DialogueTrigger
   layers:
   - Default
   - TransparentFX
