@@ -1,13 +1,31 @@
 fileFormatVersion: 2
-guid: 1ad6796897ccedb47906f0496fea032b
+guid: 344572e2dfeeee4488d6c9c673bccfe8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7925157222857896072
-    second: Platforms_0
+      213: 2099626960052526501
+    second: pngimg.com - game_over_PNG33_0
   - first:
-      213: -871907234539676369
-    second: Platforms_1
+      213: 5398539420528336039
+    second: pngimg.com - game_over_PNG33_1
+  - first:
+      213: -2347591685408106761
+    second: pngimg.com - game_over_PNG33_2
+  - first:
+      213: 7340976730700986048
+    second: pngimg.com - game_over_PNG33_3
+  - first:
+      213: -2816810601879129567
+    second: pngimg.com - game_over_PNG33_4
+  - first:
+      213: -8161676052349028406
+    second: pngimg.com - game_over_PNG33_5
+  - first:
+      213: -9200074267109723594
+    second: pngimg.com - game_over_PNG33_6
+  - first:
+      213: 4669926045271905435
+    second: pngimg.com - game_over_PNG33_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -54,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -116,45 +134,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Platforms_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 31
-        width: 33
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 87f0f6ebe7f240290800000000000000
-      internalID: -7925157222857896072
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Platforms_1
+      name: pngimg.com - game_over_PNG33_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 17
+        width: 800
+        height: 827
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f2d5b206dfc56e3f0800000000000000
-      internalID: -871907234539676369
+      spriteID: 5ad93ca889f532d10800000000000000
+      internalID: 2099626960052526501
       vertices: []
       indices: 
       edges: []
@@ -163,7 +159,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6226af07f7dce0b43a999800decdba52
     internalID: 0
     vertices: []
     indices: 
@@ -171,10 +167,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":800.0,"y":827.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Platforms_0: -7925157222857896072
-      Platforms_1: -871907234539676369
+      pngimg.com - game_over_PNG33_0: 2099626960052526501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

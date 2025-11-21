@@ -19,31 +19,23 @@ public class Character : MonoBehaviour
 
     private SpriteRenderer _charSpriteRenderer;
     private float _groundCheckPointOriginalLocalY;
-    //
     private bool _canInvertGravity = true;
-    //
 
     protected virtual void Awake()
     {
         _mb = GetComponent<MoveBehaviour>();
         _jb = GetComponent<JumpBehaviour>();
-        //
-        _charSpriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (groundCheckPoint != null)
-        {
-            _groundCheckPointOriginalLocalY = groundCheckPoint.localPosition.y;
-        }
-        //
-    }
-
-    public void Start()
-    {
         _animator = GetComponent<Animator>();
+        _charSpriteRenderer = GetComponent<SpriteRenderer>();
 
         if (_animator != null)
         {
             _mb.SetAnimator(_animator);
+        }
+
+        if (groundCheckPoint != null)
+        {
+            _groundCheckPointOriginalLocalY = groundCheckPoint.localPosition.y;
         }
     }
 
@@ -86,7 +78,7 @@ public class Character : MonoBehaviour
         // Raycast cap avall, retorna true si detecta algo
         RaycastHit2D hit = Physics2D.Raycast(groundCheckPoint.position, raycastDirection, raycastLength, groundLayer);
 
-        Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
+        //Debug.Log($"Raycast Hit: {hit.collider != null} at {hit.point}");
 
         // Si detecta terra, resetejar salt
         if (hit.collider != null)
